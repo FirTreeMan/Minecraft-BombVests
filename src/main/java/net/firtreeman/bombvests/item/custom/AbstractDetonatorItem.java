@@ -25,6 +25,7 @@ public abstract class AbstractDetonatorItem extends Item {
         if (bombVest == null) return false;
         if (canDetonate(bombVest, stack)) {
             detonate(livingEntity, bombVest);
+            stack.shrink(1);
             return true;
         }
         return false;

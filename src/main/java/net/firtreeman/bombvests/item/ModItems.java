@@ -18,6 +18,9 @@ public class ModItems {
     public static final RegistryObject<Item> DIAMOND_BOMB_VEST = ITEMS.register("diamond_bomb", () -> new ArmorBombVestItem(ModArmorMaterials.DIAMOND_BOMB, new Item.Properties()));
 
     public static final RegistryObject<Item> DYNAMITE = ITEMS.register("dynamite", () -> new DynamiteItem(new Item.Properties(), DYNAMITE_TYPES.DYNAMITE));
+    public static final RegistryObject<Item> VOLATILE_DYNAMITE = ITEMS.register("volatile_dynamite", () -> new DynamiteItem(new Item.Properties(), DYNAMITE_TYPES.VOLATILE_DYNAMITE));
+    public static final RegistryObject<Item> HIGH_EXPLOSIVE = ITEMS.register("high_explosive", () -> new DynamiteItem(new Item.Properties(), DYNAMITE_TYPES.HIGH_EXPLOSIVE));
+    public static final RegistryObject<Item> SHRAPNEL = ITEMS.register("shrapnel", () -> new DynamiteItem(new Item.Properties(), DYNAMITE_TYPES.SHRAPNEL));
 
     public static final RegistryObject<Item> DETONATOR = ITEMS.register("detonator", () -> new DetonatorItem(new Item.Properties()));
     public static final RegistryObject<Item> DEAD_MANS_SWITCH = ITEMS.register("dead_mans_switch", () -> new DeadMansSwitchItem(new Item.Properties()));

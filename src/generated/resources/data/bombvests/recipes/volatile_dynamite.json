@@ -14,11 +14,12 @@
   },
   "pattern": [
     " G ",
-    " B ",
-    " R "
+    "RBR",
+    "   "
   ],
   "result": {
-    "item": "bombvests:dynamite"
+    "count": 2,
+    "item": "bombvests:volatile_dynamite"
   },
   "show_notification": true
 }

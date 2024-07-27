@@ -1,10 +1,15 @@
 package net.firtreeman.bombvests.util;
 
+import net.firtreeman.bombvests.item.ModItems;
+import net.firtreeman.bombvests.item.custom.ArmorBombVestItem;
 import net.firtreeman.bombvests.item.custom.NormalBombVestItem;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BombVestUtils {
     public static String TAG_DYNAMITES = "Dynamites";
@@ -16,12 +21,68 @@ public class BombVestUtils {
 //            0, 80, 195, 241, 283, 316, 343, 366, 385, 403, 418, 432, 445, 457, 467, 478, 487, 496, 504, 512, 520, 527, 534, 540, 547, 553, 558, 564, 569,
             0, 80, 173, 228, 267, 298, 322, 343, 361, 377, 392, 405, 416, 427, 437, 447, 455, 464, 471, 479, 486, 492, 498, 504, 510, 516, 521, 526, 531, 536, 541, 545, 549, 553, 557, 561, 565, 569, 573,
     }).map(s -> s * 2).toArray();
+    public static Map<DYNAMITE_TYPES, Item> DYNAMITE_MAP = Map.ofEntries(
+            Map.entry(DYNAMITE_TYPES.DYNAMITE, ModItems.DYNAMITE.get()),
+            Map.entry(DYNAMITE_TYPES.VOLATILE_DYNAMITE, ModItems.VOLATILE_DYNAMITE.get()),
+            Map.entry(DYNAMITE_TYPES.HIGH_EXPLOSIVE, ModItems.HIGH_EXPLOSIVE.get()),
+            Map.entry(DYNAMITE_TYPES.SHRAPNEL, ModItems.SHRAPNEL.get())
+    );
+
+    public static HashMap<DYNAMITE_TYPES, Integer> getDynamiteCounts(ItemStack stack) {
+        HashMap<DYNAMITE_TYPES, Integer> map = new HashMap<>();
+        DYNAMITE_TYPES[] dynamites = getDynamites(stack);
+
+        for (DYNAMITE_TYPES dynamite: dynamites)
+            map.put(dynamite, map.getOrDefault(dynamite, 0) + 1);
+
+        return map;
+    }
 
     public static float getExplosionRadius(ItemStack stack) {
+        float logInput = getExplosionPower(stack);
+        if (logInput <= 0.0F) return logInput;
+
+        double logValue = Math.log(logInput / 10 + 1) / Math.log(2.75);
+
+        return (float) (10 * logValue);
+//        return (float) (5 * Math.log10(logInput) + 2);
+    }
+
+    public static float getExplosionPower(ItemStack stack) {
         DYNAMITE_TYPES[] dynamites = getDynamites(stack);
         if (dynamites.length == 0) return 0.0F;
 
-        return (float) (5 * Math.log10(dynamites.length) + 2);
+        float power = 0.0F;
+        for (DYNAMITE_TYPES dynamite: dynamites) {
+            power += switch (dynamite) {
+                case DYNAMITE -> 1.0F;
+                case VOLATILE_DYNAMITE -> 1.65F;
+                case HIGH_EXPLOSIVE -> 2.75F;
+                case SHRAPNEL -> 1.1F;
+            };
+        }
+
+        return power;
+    }
+
+    public static float getDamageExplosionChance(ItemStack stack, boolean isDead) {
+        int volatiles = getDynamiteCounts(stack).getOrDefault(DYNAMITE_TYPES.VOLATILE_DYNAMITE, 0);
+        int maxDynamite = getMaxDynamiteCount(stack) > 0 ? getMaxDynamiteCount(stack) : 10;
+
+        if (isDead && volatiles > 0)
+            return 1.0F;
+        if (stack.getItem() instanceof ArmorBombVestItem && stack.getMaxDamage() - stack.getDamageValue() <= 2)
+            return 1.0F;
+
+        return (float) Math.pow((float) volatiles / maxDynamite, 1.5F);
+    }
+
+    public static float getShrapnelChance(ItemStack stack) {
+        int shrapnel = getDynamiteCounts(stack).getOrDefault(DYNAMITE_TYPES.SHRAPNEL, 0);
+        int maxDynamite = getMaxDynamiteCount(stack) > 0 ? getMaxDynamiteCount(stack) : 10;
+
+        // max 50%
+        return (float) shrapnel / (maxDynamite * 2);
     }
 
     public static DYNAMITE_TYPES[] getDynamites(ItemStack stack) {
@@ -49,6 +110,31 @@ public class BombVestUtils {
         tag.putIntArray(TAG_DYNAMITES, newDynamites);
 
         return true;
+    }
+
+    public static ItemStack removeDynamite(ItemStack stack) {
+        return removeDynamite(stack, getDynamites(stack)[0], -1);
+    }
+
+    public static ItemStack removeDynamite(ItemStack stack, DYNAMITE_TYPES dynamiteToRemove, int maxRemoved) {
+        DYNAMITE_TYPES[] dynamites = getDynamites(stack);
+        DYNAMITE_TYPES[] filteredDynamites = Arrays.stream(dynamites).filter(s -> s != dynamiteToRemove).toList().toArray(new DYNAMITE_TYPES[0]);
+        int outAmt = dynamites.length - filteredDynamites.length;
+
+        // if unable to extract all dynamite to the target slot
+        if (maxRemoved > -1 && outAmt > maxRemoved) {
+            int addAmt = outAmt - maxRemoved;
+            outAmt -= maxRemoved;
+
+            DYNAMITE_TYPES[] newFilteredDynamites = new DYNAMITE_TYPES[filteredDynamites.length + addAmt];
+            System.arraycopy(filteredDynamites, 0, newFilteredDynamites, 0, filteredDynamites.length);
+            for (int i = filteredDynamites.length; i < newFilteredDynamites.length; i++)
+                newFilteredDynamites[i] = dynamiteToRemove;
+            filteredDynamites = newFilteredDynamites;
+        }
+
+        setDynamites(stack, filteredDynamites);
+        return new ItemStack(DYNAMITE_MAP.get(dynamiteToRemove), outAmt);
     }
 
     public static void clearDynamite(ItemStack stack) {

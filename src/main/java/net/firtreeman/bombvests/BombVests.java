@@ -10,12 +10,15 @@ import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AnvilUpdateEvent;
@@ -23,7 +26,9 @@ import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -109,13 +114,49 @@ public class BombVests {
         }
 
         @SubscribeEvent
+        public static void onLivingHurt(LivingHurtEvent event) {
+            LivingEntity livingEntity = event.getEntity();
+            ItemStack armorPiece = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+            if (armorPiece.getItem() instanceof BombVestItem)
+                if (livingEntity.getRandom().nextFloat() < BombVestUtils.getDamageExplosionChance(armorPiece, false))
+                    AbstractDetonatorItem.forceDetonate(livingEntity, armorPiece);
+        }
+
+        @SubscribeEvent
         public static void onLivingDeath(LivingDeathEvent event) {
-            if (event.getEntity() instanceof Player player) {
-                beepingPlayers.remove(player);
-                if (player.getItemBySlot(EquipmentSlot.CHEST).getItem() instanceof BombVestItem)
+            LivingEntity livingEntity = event.getEntity();
+            ItemStack armorPiece = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+            if (armorPiece.getItem() instanceof BombVestItem) {
+                if (livingEntity instanceof Player player) {
+                    beepingPlayers.remove(livingEntity);
                     for (ItemStack itemStack : player.getInventory().items)
-                        if (itemStack.getItem() instanceof FailSafeItem failSafeItem)
-                            failSafeItem.tryDetonate(player, itemStack);
+                        if (itemStack.getItem() instanceof FailSafeItem || itemStack.getItem() instanceof DeadMansSwitchItem) {
+                            ((AbstractDetonatorItem) itemStack.getItem()).tryDetonate(player, itemStack);
+                            return;
+                        }
+                }
+
+                if (livingEntity.getRandom().nextFloat() < BombVestUtils.getDamageExplosionChance(armorPiece, true)) {
+                    AbstractDetonatorItem.forceDetonate(livingEntity, armorPiece);
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onExplosion(ExplosionEvent.Detonate event) {
+            Explosion explosion = event.getExplosion();
+            if (explosion.getExploder() instanceof LivingEntity livingEntity) {
+                ItemStack armorPiece = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
+                if (armorPiece.getItem() instanceof BombVestItem) {
+                    event.getAffectedEntities().add(livingEntity);
+                    float shrapnelChance = BombVestUtils.getShrapnelChance(armorPiece);
+                    if (shrapnelChance == 0.0F) return;
+
+                    for (Entity entity: event.getAffectedEntities()) {
+                        if (entity.level().getRandom().nextFloat() < shrapnelChance)
+                            entity.hurt(explosion.getDamageSource(), 10.0F);
+                    }
+                }
             }
         }
 

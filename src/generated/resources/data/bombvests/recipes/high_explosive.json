@@ -8,17 +8,20 @@
     "G": {
       "item": "minecraft:gunpowder"
     },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
     "R": {
       "item": "minecraft:redstone"
     }
   },
   "pattern": [
-    " G ",
-    " B ",
+    " I ",
+    "GBG",
     " R "
   ],
   "result": {
-    "item": "bombvests:dynamite"
+    "item": "bombvests:high_explosive"
   },
   "show_notification": true
 }

@@ -1,11 +1,19 @@
 package net.firtreeman.bombvests.item.custom;
 
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import static net.firtreeman.bombvests.util.BombVestUtils.*;
 
@@ -36,6 +44,23 @@ public class NormalBombVestItem extends BombVestItem {
     }
 
     @Override
+    public boolean overrideStackedOnOther(ItemStack pStack, Slot pSlot, ClickAction pAction, Player pPlayer) {
+        if (pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer)) {
+            if (!pSlot.hasItem())
+                pSlot.set(removeDynamite(pStack));
+            else if (pSlot.getItem().getItem() instanceof DynamiteItem dynamiteItem) {
+                int maxIncrementable = pSlot.getMaxStackSize() - pSlot.getItem().getCount();
+                if (maxIncrementable == 0) return false;
+
+                pSlot.getItem().grow(removeDynamite(pStack, dynamiteItem.getDynamiteType(), maxIncrementable).getCount());
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean overrideOtherStackedOnMe(ItemStack pStack, ItemStack pOther, Slot pSlot, ClickAction pAction, Player pPlayer, SlotAccess pAccess) {
         if (pAction == ClickAction.SECONDARY && pSlot.allowModification(pPlayer))
             if (!pOther.isEmpty() && pOther.getItem() instanceof DynamiteItem dynamiteItem)
@@ -45,5 +70,12 @@ public class NormalBombVestItem extends BombVestItem {
                 }
 
         return false;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+        pTooltipComponents.add(Component.literal(String.format("%d/%d", getDynamites(pStack).length, getMaxDynamite())));
+
+        super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }

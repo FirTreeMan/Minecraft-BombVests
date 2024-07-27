@@ -24,11 +24,13 @@ public class ToggleDetonatorItem extends AbstractDetonatorItem{
     @Override
     public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
         ItemStack stack = pPlayer.getItemInHand(pUsedHand);
-        setPrimed(stack, !isPrimed(stack));
 
-        if (getFilledBombVest(pPlayer) != null)
+        if (getFilledBombVest(pPlayer) != null) {
+            setPrimed(stack, !isPrimed(stack));
+
             pLevel.playSeededSound(null, pPlayer.getX(), pPlayer.getY() + 1.0F, pPlayer.getZ(),
                     ModSounds.SOUND_SHORT_BEEP.get(), SoundSource.PLAYERS, 1.0F, 1.0F, 0);
+        }
 
         return InteractionResultHolder.success(stack);
     }

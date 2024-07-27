@@ -5,6 +5,9 @@
   "item.bombvests.diamond_bomb": "Diamond Chestplate",
 
   "item.bombvests.dynamite": "Dynamite",
+  "item.bombvests.volatile_dynamite": "Volatile Dynamite",
+  "item.bombvests.high_explosive": "High-Explosive Dynamite",
+  "item.bombvests.shrapnel": "Fragmenting Dynamite",
 
   "item.bombvests.detonator": "Detonator",
   "item.bombvests.dead_mans_switch": "Dead Man's Switch",
@@ -12,6 +15,7 @@
   "item.bombvests.timed_detonator": "Timed Detonator",
 
   "tooltip.bombvests.armor_bomb_vest": "Concealed Bomb",
+  "tooltip.bombvests.bomb_vest_explosive_power": "Explosive Power: ",
 
   "sounds.bombvests.sound_short_beep": "Bomb Ticks",
   "sounds.bombvests.sound_long_beep": "Bomb Ticks Rapidly",

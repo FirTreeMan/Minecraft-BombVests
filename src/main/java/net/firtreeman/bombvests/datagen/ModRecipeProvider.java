@@ -8,6 +8,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import java.util.Arrays;
@@ -49,12 +50,48 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .requires(Items.TNT)
                 .unlockedBy(getHasName(Items.TNT), has(Items.TNT))
                 .save(pWriter);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ModItems.DYNAMITE.get())
-                .requires(Items.BAMBOO)
-                .requires(Items.GUNPOWDER)
-                .requires(Items.REDSTONE)
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.DYNAMITE.get())
+                .pattern(" G ")
+                .pattern(" B ")
+                .pattern(" R ")
+                .define('G', Items.GUNPOWDER)
+                .define('B', Items.BAMBOO)
+                .define('R', Items.REDSTONE)
                 .unlockedBy(getHasName(Items.BAMBOO), has(Items.BAMBOO))
-                .save(pWriter, getFormattedRecipeName("dynamite_from_bamboo"));
+                .save(pWriter, getFormattedConversionRecipeName(ModItems.DYNAMITE.get(), Items.BAMBOO));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.VOLATILE_DYNAMITE.get(), 2)
+                .pattern(" G ")
+                .pattern("RBR")
+                .pattern("   ")
+                .define('G', Items.GUNPOWDER)
+                .define('B', Items.BAMBOO)
+                .define('R', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.BAMBOO), has(Items.BAMBOO))
+                .save(pWriter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.HIGH_EXPLOSIVE.get())
+                .pattern(" I ")
+                .pattern("GBG")
+                .pattern(" R ")
+                .define('I', Items.IRON_INGOT)
+                .define('G', Items.GUNPOWDER)
+                .define('B', Items.BAMBOO)
+                .define('R', Items.REDSTONE)
+                .unlockedBy(getHasName(Items.BAMBOO), has(Items.BAMBOO))
+                .save(pWriter);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ModItems.HIGH_EXPLOSIVE.get())
+                .requires(ModItems.DYNAMITE.get())
+                .requires(Items.GUNPOWDER)
+                .requires(Items.GUNPOWDER)
+                .unlockedBy(getHasName(ModItems.DYNAMITE.get()), has(ModItems.DYNAMITE.get()))
+                .save(pWriter, getFormattedConversionRecipeName(ModItems.HIGH_EXPLOSIVE.get(), ModItems.DYNAMITE.get()));
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SHRAPNEL.get())
+                .pattern("III")
+                .pattern("IDI")
+                .pattern("III")
+                .define('I', Items.IRON_NUGGET)
+                .define('D', ModItems.DYNAMITE.get())
+                .unlockedBy(getHasName(ModItems.DYNAMITE.get()), has(ModItems.DYNAMITE.get()))
+                .save(pWriter);
 
         DETONATOR_ITEMS.forEach((detonator, determiner) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, detonator)
@@ -71,6 +108,10 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .unlockedBy(getHasName(determiner), has(determiner))
                 .save(pWriter, getFormattedRecipeName(getSimpleRecipeName(detonator) + "_from_detonators"));
         });
+    }
+
+    private String getFormattedConversionRecipeName(ItemLike out, ItemLike in) {
+        return getFormattedRecipeName(getConversionRecipeName(out, in));
     }
 
     private String getFormattedRecipeName(String recipeName) {

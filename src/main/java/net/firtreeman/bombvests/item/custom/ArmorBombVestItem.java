@@ -10,14 +10,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ArmorBombVestItem extends BombVestItem{
+public class ArmorBombVestItem extends BombVestItem {
     public ArmorBombVestItem(ArmorMaterial pMaterial, Properties pProperties) {
         super(pMaterial, pProperties);
     }
 
     @Override
     public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-        pTooltipComponents.add(Component.translatable("tooltip.bombvests.armor_bomb_vest").withStyle(ChatFormatting.YELLOW));
+        pTooltipComponents.add(Component.translatable("tooltip.bombvests.armor_bomb_vest").withStyle(ChatFormatting.RED));
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
     }
 }
