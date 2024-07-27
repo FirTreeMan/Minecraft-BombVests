@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "D": {
+      "item": "minecraft:emerald"
+    }
+  },
+  "pattern": [
+    " D ",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "item": "bombvests:failsafe"
+  },
+  "show_notification": true
+}

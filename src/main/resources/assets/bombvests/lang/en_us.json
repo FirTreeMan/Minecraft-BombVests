@@ -1,0 +1,20 @@
+{
+  "item.bombvests.bomb_vest": "Bomb Vest",
+  "item.bombvests.iron_bomb": "Iron Chestplate",
+  "item.bombvests.gold_bomb": "Gold Chestplate",
+  "item.bombvests.diamond_bomb": "Diamond Chestplate",
+
+  "item.bombvests.dynamite": "Dynamite",
+
+  "item.bombvests.detonator": "Detonator",
+  "item.bombvests.dead_mans_switch": "Dead Man's Switch",
+  "item.bombvests.failsafe": "Failsafe",
+  "item.bombvests.timed_detonator": "Timed Detonator",
+
+  "tooltip.bombvests.armor_bomb_vest": "Concealed Bomb",
+
+  "sounds.bombvests.sound_short_beep": "Bomb Ticks",
+  "sounds.bombvests.sound_long_beep": "Bomb Ticks Rapidly",
+
+  "creativetab.bomb_vests_tab": "Bomb Vests"
+}

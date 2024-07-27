@@ -1,0 +1,12 @@
+// 1.20.1	2024-07-27T00:51:20.1808304	Item Models: bombvests
+9b640f2845949a7bcd0cafd347223b0bdef4ee9b assets/bombvests/models/item/bomb_vest.json
+ab7540c3031723f28bb83fba296d535d27d806ec assets/bombvests/models/item/dead_mans_switch.json
+522a8697014596f7cf406bb99d7e8e2e48beee46 assets/bombvests/models/item/dead_mans_switch_on.json
+5564bc9133ecae77f13f487e002ac1be6a7c8b97 assets/bombvests/models/item/detonator.json
+dce18665e007a8ab3d2ebd7df7822c6d4b1a238b assets/bombvests/models/item/diamond_bomb.json
+15738e433d9c16f9fa9bd0fd423e3608d36450bd assets/bombvests/models/item/dynamite.json
+f58f8f5efc27c6e0a78c0ae49abcac90a392d34b assets/bombvests/models/item/failsafe.json
+ff002aa2a6c91bf99f5b6951488dd8aab11d31e0 assets/bombvests/models/item/failsafe_on.json
+e7617fc6252696a5fe44b1d54e34ecff575a76e0 assets/bombvests/models/item/gold_bomb.json
+fcb194f4dc7d0e9da820af3438d6e4c7c0f6d350 assets/bombvests/models/item/iron_bomb.json
+1cd3917c3cb1796ec944cd9249ab426bd4f3e312 assets/bombvests/models/item/timed_detonator.json

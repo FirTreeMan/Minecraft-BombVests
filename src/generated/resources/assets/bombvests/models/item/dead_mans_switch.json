@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "bombvests:item/dead_mans_switch_on",
+      "predicate": {
+        "bombvests:primed": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "bombvests:item/dead_mans_switch"
+  }
+}

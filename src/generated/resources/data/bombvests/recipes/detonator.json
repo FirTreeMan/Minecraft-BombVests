@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "D": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "pattern": [
+    " D ",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "item": "bombvests:detonator"
+  },
+  "show_notification": true
+}

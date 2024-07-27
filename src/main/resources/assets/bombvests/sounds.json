@@ -1,0 +1,14 @@
+{
+  "sound_short_beep": {
+    "subtitles": "sounds.bombvests.sound_short_beep",
+    "sounds": [
+      "bombvests:sound_short_beep"
+    ]
+  },
+  "sound_long_beep": {
+    "subtitles": "sounds.bombvests.sound_long_beep",
+    "sounds": [
+      "bombvests:sound_long_beep"
+    ]
+  }
+}

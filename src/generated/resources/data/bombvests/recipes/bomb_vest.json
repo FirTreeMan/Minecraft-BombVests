@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "S": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    "L L",
+    "LSL",
+    "GGG"
+  ],
+  "result": {
+    "item": "bombvests:bomb_vest"
+  },
+  "show_notification": true
+}

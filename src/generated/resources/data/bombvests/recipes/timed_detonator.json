@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "D": {
+      "item": "minecraft:honeycomb"
+    }
+  },
+  "pattern": [
+    " D ",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "item": "bombvests:timed_detonator"
+  },
+  "show_notification": true
+}
