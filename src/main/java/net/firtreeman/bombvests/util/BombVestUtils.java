@@ -1,5 +1,6 @@
 package net.firtreeman.bombvests.util;
 
+import net.firtreeman.bombvests.config.ServerConfig;
 import net.firtreeman.bombvests.item.ModItems;
 import net.firtreeman.bombvests.item.custom.ArmorBombVestItem;
 import net.firtreeman.bombvests.item.custom.NormalBombVestItem;
@@ -42,9 +43,9 @@ public class BombVestUtils {
         float logInput = getExplosionPower(stack);
         if (logInput <= 0.0F) return logInput;
 
-        double logValue = Math.log(logInput / 10 + 1) / Math.log(2.75);
+        double logValue = Math.log(logInput / 10 + 1) / Math.log(ServerConfig.EXPLOSION_RADIUS_LOG_BASE.get());
 
-        return (float) (10 * logValue);
+        return (float) (ServerConfig.EXPLOSION_RADIUS_LOG_SCALAR.get() * logValue);
 //        return (float) (5 * Math.log10(logInput) + 2);
     }
 
@@ -55,10 +56,10 @@ public class BombVestUtils {
         float power = 0.0F;
         for (DYNAMITE_TYPES dynamite: dynamites) {
             power += switch (dynamite) {
-                case DYNAMITE -> 1.0F;
-                case VOLATILE_DYNAMITE -> 1.65F;
-                case HIGH_EXPLOSIVE -> 2.75F;
-                case SHRAPNEL -> 1.1F;
+                case DYNAMITE -> ServerConfig.DYNAMITE_EXPLOSION_VALUE.get().floatValue();
+                case VOLATILE_DYNAMITE -> ServerConfig.VOLATILE_DYNAMITE_EXPLOSION_VALUE.get().floatValue();
+                case HIGH_EXPLOSIVE -> ServerConfig.HIGH_EXPLOSIVE_EXPLOSION_VALUE.get().floatValue();
+                case SHRAPNEL -> ServerConfig.SHRAPNEL_EXPLOSION_VALUE.get().floatValue();
             };
         }
 

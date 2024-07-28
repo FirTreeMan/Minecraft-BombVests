@@ -1,6 +1,7 @@
 package net.firtreeman.bombvests;
 
 import com.mojang.logging.LogUtils;
+import net.firtreeman.bombvests.config.ServerConfig;
 import net.firtreeman.bombvests.item.ModItems;
 import net.firtreeman.bombvests.item.custom.*;
 import net.firtreeman.bombvests.sound.ModSounds;
@@ -32,7 +33,9 @@ import net.minecraftforge.event.level.ExplosionEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -58,6 +61,8 @@ public class BombVests {
         ModCreativeModeTabs.register(modEventBus);
         ModItems.register(modEventBus);
         ModSounds.register(modEventBus);
+
+        ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, ServerConfig.SPEC, MOD_ID + "-server.toml");
 
         modEventBus.addListener(this::commonSetup);
 

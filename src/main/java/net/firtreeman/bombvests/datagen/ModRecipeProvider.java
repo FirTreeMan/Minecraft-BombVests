@@ -23,6 +23,12 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             Map.entry(ModItems.TIMED_DETONATOR.get(), Items.HONEYCOMB)
     );
 
+    public static final Map<Item, Item> BOMB_ANVIL_RECIPES = Map.ofEntries(
+            Map.entry(Items.IRON_CHESTPLATE, ModItems.IRON_BOMB_VEST.get()),
+            Map.entry(Items.GOLDEN_CHESTPLATE, ModItems.GOLD_BOMB_VEST.get()),
+            Map.entry(Items.DIAMOND_CHESTPLATE, ModItems.DIAMOND_BOMB_VEST.get())
+    );
+
 //    public static final BombVestItem[] BOMB_VEST_ITEMS = Arrays.stream(new Item[]{
 //            ModItems.BOMB_VEST.get(),
 //            ModItems.IRON_BOMB_VEST.get(),
@@ -32,6 +38,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
 
     public ModRecipeProvider(PackOutput pOutput) {
         super(pOutput);
+    }
+
+    public static String getJeiRecipeName(ItemLike out) {
+        return "jei_plugin" + getSimpleRecipeName(out);
+    }
+
+    public static String getJeiRecipeName(ItemLike out, ItemLike in) {
+        return "jei_plugin" + getConversionRecipeName(out, in);
     }
 
     @Override

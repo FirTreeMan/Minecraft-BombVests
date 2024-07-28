@@ -20,9 +20,7 @@ public class ModItemTagGenerator extends ItemTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-        tag(ModTags.Items.DETONATORS).add(
-                ModItems.DETONATOR.get(),
-                ModItems.DEAD_MANS_SWITCH.get()
-        );
+        ModRecipeProvider.DETONATOR_ITEMS.keySet().forEach(
+                s -> tag(ModTags.Items.DETONATORS).add(s));
     }
 }

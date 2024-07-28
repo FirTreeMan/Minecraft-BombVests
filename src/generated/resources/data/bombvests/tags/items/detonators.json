@@ -1,6 +1,8 @@
 {
   "values": [
+    "bombvests:timed_detonator",
     "bombvests:detonator",
-    "bombvests:dead_mans_switch"
+    "bombvests:dead_mans_switch",
+    "bombvests:failsafe"
   ]
 }
