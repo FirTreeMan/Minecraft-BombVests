@@ -95,7 +95,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, ModItems.HIGH_EXPLOSIVE.get())
                 .requires(ModItems.DYNAMITE.get())
                 .requires(Items.GUNPOWDER)
-                .requires(Items.GUNPOWDER)
+                .requires(Items.IRON_INGOT)
                 .unlockedBy(getHasName(ModItems.DYNAMITE.get()), has(ModItems.DYNAMITE.get()))
                 .save(pWriter, getFormattedConversionRecipeName(ModItems.HIGH_EXPLOSIVE.get(), ModItems.DYNAMITE.get()));
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.SHRAPNEL.get())

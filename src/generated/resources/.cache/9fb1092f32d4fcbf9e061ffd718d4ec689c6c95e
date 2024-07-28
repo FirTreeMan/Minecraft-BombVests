@@ -1,4 +1,4 @@
-// 1.20.1	2024-07-27T13:03:25.8412311	Recipes
+// 1.20.1	2024-07-27T20:06:23.7802866	Recipes
 87ae3df071da5a3ae6611fb15575c783b1aab4a7 data/bombvests/advancements/recipes/combat/bomb_vest.json
 8ae761dfd38eecd5a82637d69500492a17967583 data/bombvests/advancements/recipes/combat/dead_mans_switch.json
 a2116951816327eaa1365b6cdb00786a439b8a7a data/bombvests/advancements/recipes/combat/dead_mans_switch_from_detonators.json
@@ -24,7 +24,7 @@ ddfd65512360630f429c59024e91cb9e8f8eb003 data/bombvests/recipes/detonator.json
 3368140e633823ad3b1f9cdd5fb3e0216cc85e92 data/bombvests/recipes/failsafe.json
 8e1758665d0cab2f92059b009079065a421598de data/bombvests/recipes/failsafe_from_detonators.json
 ba5d56cbacf0aeb1b61ae1a360e4aa537dac0c59 data/bombvests/recipes/high_explosive.json
-02cd9ffa72f988a3c5d428178f909f413dc45210 data/bombvests/recipes/high_explosive_from_dynamite.json
+12f6558c21f1981c75542e6fb7b38d2329baa05b data/bombvests/recipes/high_explosive_from_dynamite.json
 712e2beec72b62860c3df3af8e071cfe50f49ab1 data/bombvests/recipes/shrapnel.json
 33c57030060a49c39becee660468fcc756bd0b10 data/bombvests/recipes/timed_detonator.json
 5a666058b50cf100853255bf56fa8a701f45452d data/bombvests/recipes/timed_detonator_from_detonators.json
