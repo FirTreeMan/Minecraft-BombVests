@@ -134,6 +134,9 @@ public class BombVestUtils {
             filteredDynamites = newFilteredDynamites;
         }
 
+        if (filteredDynamites.length == 0)
+            clearTimer(stack);
+
         setDynamites(stack, filteredDynamites);
         return new ItemStack(DYNAMITE_MAP.get(dynamiteToRemove), outAmt);
     }
@@ -142,6 +145,7 @@ public class BombVestUtils {
         if (!stack.hasTag()) return;
 
         stack.getTag().remove(TAG_DYNAMITES);
+        clearTimer(stack);
     }
 
     public static int getMaxDynamiteCount(ItemStack stack) {
@@ -158,6 +162,14 @@ public class BombVestUtils {
         stack.getOrCreateTag().putInt(TAG_TIMER, 0);
         stack.getOrCreateTag().putInt(TAG_TIMER_MAX, 600 * 2);
         stack.getOrCreateTag().putInt(TAG_SOUND_TIMING, 0);
+    }
+
+    public static void clearTimer(ItemStack stack) {
+        if (hasTimer(stack)) {
+            stack.getTag().remove(TAG_TIMER);
+            stack.getTag().remove(TAG_TIMER_MAX);
+            stack.getTag().remove(TAG_SOUND_TIMING);
+        }
     }
 
     public static boolean hasTimer(ItemStack stack) {
