@@ -5,4 +5,5 @@ public enum DYNAMITE_TYPES {
     VOLATILE_DYNAMITE,
     HIGH_EXPLOSIVE,
     SHRAPNEL,
+    PACKED,
 }

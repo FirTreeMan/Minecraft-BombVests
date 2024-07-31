@@ -1,4 +1,4 @@
-// 1.20.1	2024-07-27T20:06:23.7802866	Recipes
+// 1.20.1	2024-07-30T22:25:37.8957438	Recipes
 87ae3df071da5a3ae6611fb15575c783b1aab4a7 data/bombvests/advancements/recipes/combat/bomb_vest.json
 8ae761dfd38eecd5a82637d69500492a17967583 data/bombvests/advancements/recipes/combat/dead_mans_switch.json
 a2116951816327eaa1365b6cdb00786a439b8a7a data/bombvests/advancements/recipes/combat/dead_mans_switch_from_detonators.json
@@ -10,6 +10,7 @@ e4aad92420f75f44267c2be34c1ff095b76f3422 data/bombvests/advancements/recipes/com
 d6a4b0bfa0c267edf7958cb4b9c35f6383c3f730 data/bombvests/advancements/recipes/combat/failsafe_from_detonators.json
 f462616fa59a262f74c443ca5b0e267622dfaea9 data/bombvests/advancements/recipes/combat/high_explosive.json
 cb18141a72ef46fbdf42e665d80dec586b13e205 data/bombvests/advancements/recipes/combat/high_explosive_from_dynamite.json
+0c1722360560b0e6281bc7047d3db31cb81bb606 data/bombvests/advancements/recipes/combat/packed.json
 87df5f82f99b25d47512a446453096b5c46d7f0c data/bombvests/advancements/recipes/combat/shrapnel.json
 6b8ba7361a290abc1fbfd51b4b0dd8f0e64642f5 data/bombvests/advancements/recipes/combat/timed_detonator.json
 07d2d2a7a0b57cf12e099f08f92d7a70c7ae81bc data/bombvests/advancements/recipes/combat/timed_detonator_from_detonators.json
@@ -25,6 +26,7 @@ ddfd65512360630f429c59024e91cb9e8f8eb003 data/bombvests/recipes/detonator.json
 8e1758665d0cab2f92059b009079065a421598de data/bombvests/recipes/failsafe_from_detonators.json
 ba5d56cbacf0aeb1b61ae1a360e4aa537dac0c59 data/bombvests/recipes/high_explosive.json
 12f6558c21f1981c75542e6fb7b38d2329baa05b data/bombvests/recipes/high_explosive_from_dynamite.json
+3ffe13f6a99f4eecec293189e5b98edef652a2d4 data/bombvests/recipes/packed.json
 712e2beec72b62860c3df3af8e071cfe50f49ab1 data/bombvests/recipes/shrapnel.json
 33c57030060a49c39becee660468fcc756bd0b10 data/bombvests/recipes/timed_detonator.json
 5a666058b50cf100853255bf56fa8a701f45452d data/bombvests/recipes/timed_detonator_from_detonators.json

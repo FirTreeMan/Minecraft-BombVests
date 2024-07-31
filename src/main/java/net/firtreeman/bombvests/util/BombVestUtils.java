@@ -26,7 +26,8 @@ public class BombVestUtils {
             Map.entry(DYNAMITE_TYPES.DYNAMITE, ModItems.DYNAMITE.get()),
             Map.entry(DYNAMITE_TYPES.VOLATILE_DYNAMITE, ModItems.VOLATILE_DYNAMITE.get()),
             Map.entry(DYNAMITE_TYPES.HIGH_EXPLOSIVE, ModItems.HIGH_EXPLOSIVE.get()),
-            Map.entry(DYNAMITE_TYPES.SHRAPNEL, ModItems.SHRAPNEL.get())
+            Map.entry(DYNAMITE_TYPES.SHRAPNEL, ModItems.SHRAPNEL.get()),
+            Map.entry(DYNAMITE_TYPES.PACKED, ModItems.PACKED.get())
     );
 
     public static HashMap<DYNAMITE_TYPES, Integer> getDynamiteCounts(ItemStack stack) {
@@ -40,34 +41,44 @@ public class BombVestUtils {
     }
 
     public static float getExplosionRadius(ItemStack stack) {
-        float logInput = getExplosionPower(stack);
-        if (logInput <= 0.0F) return logInput;
+        float[] powers = getExplosionPower(stack);
+        float logInput = powers[0];
+        float flatRadius = powers[1];
+        if (logInput <= 0.0F && flatRadius <= 0.0F) return 0.0F;
 
         double logValue = Math.log(logInput / 10 + 1) / Math.log(ServerConfig.EXPLOSION_RADIUS_LOG_BASE.get());
 
-        return (float) (ServerConfig.EXPLOSION_RADIUS_LOG_SCALAR.get() * logValue);
+        return (float) (ServerConfig.EXPLOSION_RADIUS_LOG_SCALAR.get() * logValue + flatRadius);
 //        return (float) (5 * Math.log10(logInput) + 2);
     }
 
-    public static float getExplosionPower(ItemStack stack) {
+    public static float[] getExplosionPower(ItemStack stack) {
         DYNAMITE_TYPES[] dynamites = getDynamites(stack);
-        if (dynamites.length == 0) return 0.0F;
+        if (dynamites.length == 0) return new float[]{0.0F, 0.0F};
 
         float power = 0.0F;
+        float flat_power = 0.0F;
         for (DYNAMITE_TYPES dynamite: dynamites) {
             power += switch (dynamite) {
                 case DYNAMITE -> ServerConfig.DYNAMITE_EXPLOSION_VALUE.get().floatValue();
                 case VOLATILE_DYNAMITE -> ServerConfig.VOLATILE_DYNAMITE_EXPLOSION_VALUE.get().floatValue();
                 case HIGH_EXPLOSIVE -> ServerConfig.HIGH_EXPLOSIVE_EXPLOSION_VALUE.get().floatValue();
                 case SHRAPNEL -> ServerConfig.SHRAPNEL_EXPLOSION_VALUE.get().floatValue();
+                default -> 0.0F;
+            };
+            flat_power += switch (dynamite) {
+                case PACKED -> ServerConfig.PACKED_EXPLOSION_VALUE.get().floatValue();
+                default -> 0.0F;
             };
         }
 
-        return power;
+        return new float[]{power, flat_power};
     }
 
     public static float getDamageExplosionChance(ItemStack stack, boolean isDead) {
-        int volatiles = getDynamiteCounts(stack).getOrDefault(DYNAMITE_TYPES.VOLATILE_DYNAMITE, 0);
+        HashMap<DYNAMITE_TYPES, Integer> dynamiteCounts = getDynamiteCounts(stack);
+        int volatiles = dynamiteCounts.getOrDefault(DYNAMITE_TYPES.VOLATILE_DYNAMITE, 0);
+        int packeds = dynamiteCounts.getOrDefault(DYNAMITE_TYPES.PACKED, 0);
         int maxDynamite = getMaxDynamiteCount(stack) > 0 ? getMaxDynamiteCount(stack) : 10;
 
         if (isDead && volatiles > 0)
@@ -75,7 +86,7 @@ public class BombVestUtils {
         if (stack.getItem() instanceof ArmorBombVestItem && stack.getMaxDamage() - stack.getDamageValue() <= 2)
             return 1.0F;
 
-        return (float) Math.pow((float) volatiles / maxDynamite, 1.5F);
+        return (float) Math.pow((float) (volatiles + packeds) / maxDynamite, 1.5F);
     }
 
     public static float getShrapnelChance(ItemStack stack) {

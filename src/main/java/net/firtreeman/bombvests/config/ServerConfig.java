@@ -13,6 +13,7 @@ public class ServerConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> VOLATILE_DYNAMITE_EXPLOSION_VALUE;
     public static final ForgeConfigSpec.ConfigValue<Double> HIGH_EXPLOSIVE_EXPLOSION_VALUE;
     public static final ForgeConfigSpec.ConfigValue<Double> SHRAPNEL_EXPLOSION_VALUE;
+    public static final ForgeConfigSpec.ConfigValue<Double> PACKED_EXPLOSION_VALUE;
 
     static {
         BUILDER.push("Server Config for Bomb Vests");
@@ -30,6 +31,8 @@ public class ServerConfig {
                 .defineInRange("High-Explosive Dynamite Explosiveness", 2.75, 0.1, 10.0);
         SHRAPNEL_EXPLOSION_VALUE = BUILDER.comment("Explosiveness of Fragmenting Dynamite")
                 .defineInRange("Fragmenting Dynamite Explosiveness", 1.1, 0.1, 10.0);
+        PACKED_EXPLOSION_VALUE = BUILDER.comment("Explosiveness of Packed Dynamite")
+                .defineInRange("Packed Dynamite Explosiveness", 2.75F, 0.1, 10.0);
 
         BUILDER.pop();
         SPEC = BUILDER.build();

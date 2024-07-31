@@ -106,6 +106,14 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .define('D', ModItems.DYNAMITE.get())
                 .unlockedBy(getHasName(ModItems.DYNAMITE.get()), has(ModItems.DYNAMITE.get()))
                 .save(pWriter);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.PACKED.get())
+                .pattern("SHS")
+                .pattern("HHH")
+                .pattern("SHS")
+                .define('S', Items.SANDSTONE)
+                .define('H', ModItems.HIGH_EXPLOSIVE.get())
+                .unlockedBy(getHasName(ModItems.HIGH_EXPLOSIVE.get()), has(ModItems.HIGH_EXPLOSIVE.get()))
+                .save(pWriter);
 
         DETONATOR_ITEMS.forEach((detonator, determiner) -> {
             ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, detonator)
