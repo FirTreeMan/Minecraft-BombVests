@@ -45,7 +45,8 @@ public class BombVestItem extends ArmorItem {
 
         if (Screen.hasShiftDown()) {
             Component translatable = Component.translatable("tooltip.bombvests.bomb_vest_explosive_power");
-            pTooltipComponents.add(Component.literal(translatable.getString() + String.format("%.1f", getExplosionPower(pStack))).withStyle(ChatFormatting.AQUA));
+            float[] explosionPowers = getExplosionPower(pStack);
+            pTooltipComponents.add(Component.literal(translatable.getString() + String.format("%.1f", explosionPowers[0] + explosionPowers[1])).withStyle(ChatFormatting.AQUA));
         }
 
         super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);

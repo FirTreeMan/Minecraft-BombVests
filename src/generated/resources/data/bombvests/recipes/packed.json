@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "H": {
+      "item": "bombvests:high_explosive"
+    },
+    "S": {
+      "item": "minecraft:sandstone"
+    }
+  },
+  "pattern": [
+    "SHS",
+    "HHH",
+    "SHS"
+  ],
+  "result": {
+    "item": "bombvests:packed"
+  },
+  "show_notification": true
+}
