@@ -29,13 +29,6 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
             Map.entry(Items.DIAMOND_CHESTPLATE, ModItems.DIAMOND_BOMB_VEST.get())
     );
 
-//    public static final BombVestItem[] BOMB_VEST_ITEMS = Arrays.stream(new Item[]{
-//            ModItems.BOMB_VEST.get(),
-//            ModItems.IRON_BOMB_VEST.get(),
-//            ModItems.GOLD_BOMB_VEST.get(),
-//            ModItems.DIAMOND_BOMB_VEST.get(),
-//    }).map(BombVestItem.class::cast).toList().toArray(new BombVestItem[0]);
-
     public ModRecipeProvider(PackOutput pOutput) {
         super(pOutput);
     }

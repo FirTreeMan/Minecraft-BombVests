@@ -86,7 +86,7 @@ public class BombVestUtils {
         if (stack.getItem() instanceof ArmorBombVestItem && stack.getMaxDamage() - stack.getDamageValue() <= 2)
             return 1.0F;
 
-        return (float) Math.pow((float) (volatiles + packeds) / maxDynamite, 1.5F);
+        return (float) Math.pow((float) (volatiles + packeds) / maxDynamite, 1.6F);
     }
 
     public static float getShrapnelChance(ItemStack stack) {
@@ -101,7 +101,7 @@ public class BombVestUtils {
         if (!stack.hasTag()) return new DYNAMITE_TYPES[]{};
 
         CompoundTag tag = stack.getTag();
-        return Arrays.stream(tag.getIntArray(TAG_DYNAMITES)).mapToObj(s -> DYNAMITE_TYPES.values()[s]).toList().toArray(new DYNAMITE_TYPES[0]);
+        return Arrays.stream(tag.getIntArray(TAG_DYNAMITES)).mapToObj(s -> DYNAMITE_TYPES.values()[s]).toArray(DYNAMITE_TYPES[]::new);
     }
 
     public static void setDynamites(ItemStack stack, DYNAMITE_TYPES[] dynamites) {
@@ -130,7 +130,7 @@ public class BombVestUtils {
 
     public static ItemStack removeDynamite(ItemStack stack, DYNAMITE_TYPES dynamiteToRemove, int maxRemoved) {
         DYNAMITE_TYPES[] dynamites = getDynamites(stack);
-        DYNAMITE_TYPES[] filteredDynamites = Arrays.stream(dynamites).filter(s -> s != dynamiteToRemove).toList().toArray(new DYNAMITE_TYPES[0]);
+        DYNAMITE_TYPES[] filteredDynamites = Arrays.stream(dynamites).filter(s -> s != dynamiteToRemove).toArray(DYNAMITE_TYPES[]::new);
         int outAmt = dynamites.length - filteredDynamites.length;
 
         // if unable to extract all dynamite to the target slot
