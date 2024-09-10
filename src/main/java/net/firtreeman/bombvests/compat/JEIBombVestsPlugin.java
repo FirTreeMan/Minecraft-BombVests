@@ -3,21 +3,16 @@ package net.firtreeman.bombvests.compat;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.vanilla.IJeiAnvilRecipe;
 import mezz.jei.api.recipe.vanilla.IVanillaRecipeFactory;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.firtreeman.bombvests.BombVests;
 import net.firtreeman.bombvests.datagen.ModRecipeProvider;
 import net.firtreeman.bombvests.item.ModItems;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.List;
-import java.util.Map;
 
 import static net.firtreeman.bombvests.datagen.ModRecipeProvider.BOMB_ANVIL_RECIPES;
 

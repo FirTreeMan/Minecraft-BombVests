@@ -74,14 +74,6 @@ public class BombVests {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            ItemProperties.register(ModItems.DEAD_MANS_SWITCH.get(),
-                    new ResourceLocation(BombVests.MOD_ID, "primed"),
-                        (stack, level, living, id) -> DetonatorUtils.isPrimed(stack) ? 1.0F : 0.0F);
-            ItemProperties.register(ModItems.FAILSAFE.get(),
-                    new ResourceLocation(BombVests.MOD_ID, "primed"),
-                        (stack, level, living, id) -> DetonatorUtils.isPrimed(stack) ? 1.0F : 0.0F);
-        });
     }
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -95,6 +87,14 @@ public class BombVests {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(() -> {
+            ItemProperties.register(ModItems.DEAD_MANS_SWITCH.get(),
+                    new ResourceLocation(BombVests.MOD_ID, "primed"),
+                        (stack, level, living, id) -> DetonatorUtils.isPrimed(stack) ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.FAILSAFE.get(),
+                    new ResourceLocation(BombVests.MOD_ID, "primed"),
+                        (stack, level, living, id) -> DetonatorUtils.isPrimed(stack) ? 1.0F : 0.0F);
+            });
         }
     }
 
