@@ -52,6 +52,8 @@ public class NormalBombVestItem extends BombVestItem {
 
                 pSlot.getItem().grow(removeDynamite(pStack, dynamiteItem.getDynamiteType(), maxIncrementable).getCount());
             }
+            else return false;
+
             return true;
         }
 

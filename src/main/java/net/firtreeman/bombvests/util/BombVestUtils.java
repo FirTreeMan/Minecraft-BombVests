@@ -125,7 +125,9 @@ public class BombVestUtils {
     }
 
     public static ItemStack removeDynamite(ItemStack stack) {
-        return removeDynamite(stack, getDynamites(stack)[0], -1);
+        if (getDynamites(stack).length > 0)
+            return removeDynamite(stack, getDynamites(stack)[0], -1);
+        return new ItemStack(ModItems.DYNAMITE.get(), 0);
     }
 
     public static ItemStack removeDynamite(ItemStack stack, DYNAMITE_TYPES dynamiteToRemove, int maxRemoved) {
