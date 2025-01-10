@@ -135,10 +135,16 @@ public class BombVests {
                 if (livingEntity instanceof Player player) {
                     beepingPlayers.remove(livingEntity);
                     for (ItemStack itemStack : player.getInventory().items)
-                        if (itemStack.getItem() instanceof FailSafeItem || itemStack.getItem() instanceof DeadMansSwitchItem) {
+                        if (itemStack.getItem() instanceof FailSafeItem) {
                             ((AbstractDetonatorItem) itemStack.getItem()).tryDetonate(player, itemStack);
                             return;
                         }
+                }
+
+                ItemStack held = livingEntity.getMainHandItem();
+                if (held.getItem() instanceof DeadMansSwitchItem || held.getItem() instanceof FailSafeItem) {
+                    ((AbstractDetonatorItem) held.getItem()).tryDetonate(livingEntity, livingEntity.getMainHandItem());
+                    return;
                 }
 
                 if (livingEntity.getRandom().nextFloat() < BombVestUtils.getDamageExplosionChance(armorPiece, true)) {
