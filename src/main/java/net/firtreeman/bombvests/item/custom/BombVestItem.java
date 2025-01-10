@@ -1,5 +1,6 @@
 package net.firtreeman.bombvests.item.custom;
 
+import net.firtreeman.bombvests.config.ServerConfig;
 import net.firtreeman.bombvests.util.DYNAMITE_TYPES;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,7 +26,12 @@ public class BombVestItem extends ArmorItem {
     }
 
     public void explode(ItemStack stack, LivingEntity livingEntity) {
-        livingEntity.level().explode(livingEntity, livingEntity.getX(), livingEntity.getY() + 1.0F, livingEntity.getZ(), getExplosionRadius(stack), Level.ExplosionInteraction.MOB);
+        Level.ExplosionInteraction explosionInteraction;
+        if (ServerConfig.EXPLODE_BLOCKS.get())
+            explosionInteraction = Level.ExplosionInteraction.MOB;
+        else explosionInteraction = Level.ExplosionInteraction.NONE;
+
+        livingEntity.level().explode(livingEntity, livingEntity.getX(), livingEntity.getY() + 1.0F, livingEntity.getZ(), getExplosionRadius(stack), explosionInteraction);
 
         if (livingEntity instanceof Player player && player.getAbilities().instabuild)
             return;
