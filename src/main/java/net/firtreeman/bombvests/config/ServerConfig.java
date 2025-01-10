@@ -15,6 +15,8 @@ public class ServerConfig {
     public static final ForgeConfigSpec.ConfigValue<Double> SHRAPNEL_EXPLOSION_VALUE;
     public static final ForgeConfigSpec.ConfigValue<Double> PACKED_EXPLOSION_VALUE;
 
+    public static final ForgeConfigSpec.ConfigValue<Boolean> EXPLODE_BLOCKS;
+
     static {
         BUILDER.push("Server Config for Bomb Vests");
 
@@ -33,6 +35,9 @@ public class ServerConfig {
                 .defineInRange("Fragmenting Dynamite Explosiveness", 1.1, 0.1, 10.0);
         PACKED_EXPLOSION_VALUE = BUILDER.comment("Explosiveness of Packed Dynamite")
                 .defineInRange("Packed Dynamite Explosiveness", 2.75F, 0.1, 10.0);
+
+        EXPLODE_BLOCKS = BUILDER.comment("When false, Bomb Vests will not break blocks")
+                .define("Explode Blocks", true);
 
         BUILDER.pop();
         SPEC = BUILDER.build();
