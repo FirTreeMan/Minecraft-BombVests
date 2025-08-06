@@ -11,31 +11,41 @@ public abstract class AbstractDetonatorItem extends Item {
         super(pProperties.stacksTo(1));
     }
 
-    public static void forceDetonate(LivingEntity livingEntity, ItemStack bombVest) {
-        ((BombVestItem) bombVest.getItem()).explode(bombVest, livingEntity);
-    }
-
     abstract boolean canDetonate(ItemStack bombVest, ItemStack stack);
 
-    public boolean tryDetonate(LivingEntity livingEntity, ItemStack stack) {
+    public static void forceDetonate(LivingEntity livingEntity, ItemStack stack) {
+        forceDetonate(livingEntity, getFilledBombVest(livingEntity), stack);
+    }
+
+    protected static void forceDetonate(LivingEntity livingEntity, ItemStack bombVest, ItemStack stack) {
+        handleDetonate(livingEntity, bombVest, stack, true);
+    }
+
+    public static boolean tryDetonate(LivingEntity livingEntity, ItemStack stack) {
         return tryDetonate(livingEntity, getFilledBombVest(livingEntity), stack);
     }
 
-    protected boolean tryDetonate(LivingEntity livingEntity, ItemStack bombVest, ItemStack stack) {
-        if (bombVest == null) return false;
-        if (canDetonate(bombVest, stack)) {
+    protected static boolean tryDetonate(LivingEntity livingEntity, ItemStack bombVest, ItemStack stack) {
+        return handleDetonate(livingEntity, bombVest, stack, false);
+    }
+
+    private static boolean handleDetonate(LivingEntity livingEntity, ItemStack bombVest, ItemStack stack, boolean forced) {
+        if (bombVest == null || bombVest.isEmpty() || stack != null && stack.isEmpty()) return false;
+        if (forced || stack != null && ((AbstractDetonatorItem) stack.getItem()).canDetonate(bombVest, stack)) {
+            if (stack != null)
+                stack.setCount(0);
             detonate(livingEntity, bombVest);
-            stack.shrink(1);
             return true;
         }
+
         return false;
     }
 
-    private void detonate(LivingEntity livingEntity, ItemStack bombVest) {
+    private static void detonate(LivingEntity livingEntity, ItemStack bombVest) {
         ((BombVestItem) bombVest.getItem()).explode(bombVest, livingEntity);
     }
 
-    protected ItemStack getBombVest(LivingEntity livingEntity) {
+    protected static ItemStack getBombVest(LivingEntity livingEntity) {
         ItemStack armorPiece = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
         if (armorPiece.getItem() instanceof BombVestItem)
             return armorPiece;
@@ -43,7 +53,7 @@ public abstract class AbstractDetonatorItem extends Item {
         return null;
     }
 
-    protected ItemStack getFilledBombVest(LivingEntity livingEntity) {
+    protected static ItemStack getFilledBombVest(LivingEntity livingEntity) {
         ItemStack bombVest = getBombVest(livingEntity);
         if (bombVest != null && BombVestUtils.getDynamites(bombVest).length > 0)
             return bombVest;

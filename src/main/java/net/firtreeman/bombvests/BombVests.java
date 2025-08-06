@@ -100,7 +100,7 @@ public class BombVests {
 
     @Mod.EventBusSubscriber(modid = MOD_ID)
     public static class BombVestListener {
-        public static HashSet<Player> beepingPlayers = new HashSet<>();
+        public static HashSet<LivingEntity> beepingEntities = new HashSet<>();
 
         @SubscribeEvent
         public static void onAnvilUpdate(AnvilUpdateEvent event) {
@@ -124,7 +124,7 @@ public class BombVests {
             ItemStack armorPiece = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
             if (armorPiece.getItem() instanceof BombVestItem)
                 if (livingEntity.getRandom().nextFloat() < BombVestUtils.getDamageExplosionChance(armorPiece, false))
-                    AbstractDetonatorItem.forceDetonate(livingEntity, armorPiece);
+                    AbstractDetonatorItem.forceDetonate(livingEntity, null);
         }
 
         @SubscribeEvent
@@ -132,24 +132,23 @@ public class BombVests {
             LivingEntity livingEntity = event.getEntity();
             ItemStack armorPiece = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
             if (armorPiece.getItem() instanceof BombVestItem) {
+                beepingEntities.remove(livingEntity);
                 if (livingEntity instanceof Player player) {
-                    beepingPlayers.remove(livingEntity);
                     for (ItemStack itemStack : player.getInventory().items)
                         if (itemStack.getItem() instanceof FailSafeItem) {
-                            ((AbstractDetonatorItem) itemStack.getItem()).tryDetonate(player, itemStack);
+                            AbstractDetonatorItem.tryDetonate(player, itemStack);
                             return;
                         }
                 }
 
                 ItemStack held = livingEntity.getMainHandItem();
                 if (held.getItem() instanceof DeadMansSwitchItem || held.getItem() instanceof FailSafeItem) {
-                    ((AbstractDetonatorItem) held.getItem()).tryDetonate(livingEntity, livingEntity.getMainHandItem());
+                    AbstractDetonatorItem.tryDetonate(livingEntity, livingEntity.getMainHandItem());
                     return;
                 }
 
-                if (livingEntity.getRandom().nextFloat() < BombVestUtils.getDamageExplosionChance(armorPiece, true)) {
-                    AbstractDetonatorItem.forceDetonate(livingEntity, armorPiece);
-                }
+                if (livingEntity.getRandom().nextFloat() < BombVestUtils.getDamageExplosionChance(armorPiece, true))
+                    AbstractDetonatorItem.forceDetonate(livingEntity, null);
             }
         }
 
@@ -173,25 +172,26 @@ public class BombVests {
 
         @SubscribeEvent
         public static void onChangeEquipment(LivingEquipmentChangeEvent event) {
-            if (event.getEntity() instanceof Player player) {
-                if (event.getSlot() == EquipmentSlot.CHEST) {
-                    if (event.getFrom().getItem() instanceof BombVestItem && BombVestUtils.hasTimer(event.getFrom()))
-                        beepingPlayers.remove(player);
-                    if (event.getTo().getItem() instanceof BombVestItem && BombVestUtils.hasTimer(event.getTo()))
-                        beepingPlayers.add(player);
-                }
+            if (event.getSlot() == EquipmentSlot.CHEST) {
+                if (event.getFrom().getItem() instanceof BombVestItem && BombVestUtils.hasTimer(event.getFrom()))
+                    beepingEntities.remove(event.getEntity());
+                if (event.getTo().getItem() instanceof BombVestItem && BombVestUtils.hasTimer(event.getTo()))
+                    beepingEntities.add(event.getEntity());
             }
         }
 
         @SubscribeEvent
         public static void onServerTick(TickEvent.ServerTickEvent event) {
-            for (Player player: beepingPlayers) {
-                switch (BombVestUtils.tickTimer(player.getItemBySlot(EquipmentSlot.CHEST))) {
-                    case SHORT_BEEP -> player.level().playSeededSound(null, player.getX(), player.getY() + 1.0F, player.getZ(),
-                            ModSounds.SOUND_SHORT_BEEP.get(), SoundSource.PLAYERS, 1.5F, 1.0F, 0);
-                    case LONG_BEEP -> player.level().playSeededSound(null, player.getX(), player.getY() + 1.0F, player.getZ(),
-                            ModSounds.SOUND_LONG_BEEP.get(), SoundSource.PLAYERS, 1.5F, 1.0F, 0);
-                    case EXPLODE -> AbstractDetonatorItem.forceDetonate(player, player.getItemBySlot(EquipmentSlot.CHEST));
+            for (LivingEntity entity: beepingEntities) {
+                SoundSource sSource = entity instanceof Player ? SoundSource.PLAYERS : SoundSource.NEUTRAL;
+                ItemStack bombVest = entity.getItemBySlot(EquipmentSlot.CHEST);
+
+                switch (BombVestUtils.tickTimer(bombVest)) {
+                    case SHORT_BEEP -> entity.level().playSeededSound(null, entity.getX(), entity.getY() + 1.0F, entity.getZ(),
+                            ModSounds.SOUND_SHORT_BEEP.get(), sSource, 1.5F, 1.0F, 0);
+                    case LONG_BEEP -> entity.level().playSeededSound(null, entity.getX(), entity.getY() + 1.0F, entity.getZ(),
+                            ModSounds.SOUND_LONG_BEEP.get(), sSource, 1.5F, 1.0F, 0);
+                    case EXPLODE -> AbstractDetonatorItem.forceDetonate(entity, null);
                 }
             }
         }

@@ -11,6 +11,7 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,18 +27,18 @@ public class BombVestItem extends ArmorItem {
     }
 
     public void explode(ItemStack stack, LivingEntity livingEntity) {
-        Level.ExplosionInteraction explosionInteraction;
-        if (ServerConfig.EXPLODE_BLOCKS.get())
-            explosionInteraction = Level.ExplosionInteraction.BLOCK;
-        else explosionInteraction = Level.ExplosionInteraction.NONE;
+        Level.ExplosionInteraction explosionInteraction = ServerConfig.EXPLODE_BLOCKS.get() ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE;
 
-        livingEntity.level().explode(livingEntity, livingEntity.getX(), livingEntity.getY() + 1.0F, livingEntity.getZ(), getExplosionRadius(stack), explosionInteraction);
+        float explosionRadius = getExplosionRadius(stack);
 
-        if (livingEntity instanceof Player player && player.getAbilities().instabuild)
-            return;
+        if (!(livingEntity instanceof Player player && player.isCreative())) {
+            clearDynamite(stack);
+            stack.setCount(0);
+        }
 
-        clearDynamite(stack);
-        stack.shrink(1);
+        Explosion result = livingEntity.level().explode(livingEntity, livingEntity.getX(), livingEntity.getY(), livingEntity.getZ(), explosionRadius, explosionInteraction);
+        if (livingEntity.isAlive())
+            livingEntity.hurt(livingEntity.level().damageSources().explosion(result), livingEntity.getMaxHealth());
     }
 
     @Override
